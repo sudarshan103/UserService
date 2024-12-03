@@ -1,11 +1,13 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token
 from app.models.service_user_repo import ServiceUserRepo
+from app.resources.core.auth import verify_auth_token
 
 # Initialize the Blueprint
 user_api = Blueprint('user_api', __name__)
 
 @user_api.route('/user', methods=['POST'])
+@verify_auth_token
 def create_user():
     data = request.get_json()
 
@@ -21,12 +23,14 @@ def create_user():
     return jsonify({"message": "User created successfully", "uuid": new_user.uuid}), 201
 
 @user_api.route('/user', methods=['GET'])
+@verify_auth_token
 def list_users():
     users = ServiceUserRepo.get_all_users_by_filter(dict(is_deleted=None))
     return jsonify([user.to_dict() for user in users])
 
 
 @user_api.route('/user/<uuid>', methods=['GET'])
+@verify_auth_token
 def get_user(uuid):
     user = ServiceUserRepo.get_user_by_filter(dict(uuid=uuid))
 
@@ -35,7 +39,7 @@ def get_user(uuid):
 
     return jsonify(user)
 
-@user_api.route('/auth/login', methods=['POST'])
+@user_api.route('/user/login', methods=['POST'])
 def login():
     data = request.get_json()
 

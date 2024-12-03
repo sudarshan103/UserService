@@ -7,11 +7,30 @@ from sqlalchemy import Column, Integer, DateTime, inspect, String, create_engine
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import sessionmaker
 from app import db
+from sqlalchemy import create_engine
+from sqlalchemy_utils import database_exists, create_database
 
 def new_session() -> Session:
     engine = create_engine(current_app.config['SQLALCHEMY_DATABASE_URI'])
     SessionFactory = sessionmaker(engine)
     return SessionFactory()
+
+
+def manage_database_and_tables():
+    """
+    Ensures the database exists and creates the necessary tables.
+    """
+    # Get the SQLAlchemy engine
+    engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+
+    # Check if the database exists
+    if not database_exists(engine.url):
+        create_database(engine.url)  # Create the database
+        print("Database created successfully.")
+
+    # Create tables based on the models
+    db.create_all()
+    print("Tables created successfully.")
 
 class Id:
     id = Column(Integer, primary_key=True, autoincrement=True)
