@@ -1,5 +1,4 @@
-
-from app import db
+from app.models.extensions import db
 from app.models.service_user import ServiceUser
 
 

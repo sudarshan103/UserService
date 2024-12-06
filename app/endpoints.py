@@ -1,6 +1,4 @@
-import os
-
-from flask import Blueprint, render_template, flash, current_app, Response, request, jsonify
+from flask import Blueprint, render_template, flash
 
 # Initialize the Blueprint
 endpoints = Blueprint('endpoints', __name__)
