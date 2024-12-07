@@ -16,16 +16,18 @@ class ServiceUserRepo:
         return new_record
 
     @classmethod
-    def get_user_by_filter(cls, param):
-        user = ServiceUser.find_first_by_filter(param)
-        if user:
-            found_user = user.to_dict()
-            found_user.pop('password', None)
-
+    def authenticate_user(cls, param):
+        param.update(deleted_at=None)
         return ServiceUser.find_first_by_filter(param)
 
     @classmethod
-    def get_all_users_by_filter(cls, param):
+    def get_user_by_filter(cls, param):
+        param.update(deleted_at=None)
         columns = [c for c in ServiceUser.__table__.columns if c.name != 'password']
-        db.session.query(*columns).filter_by(**param).all()
-        return ServiceUser.find_all_by_filter(param)
+        return db.session.query(*columns).filter_by(**param).first()
+
+    @classmethod
+    def get_all_users_by_filter(cls, param):
+        param.update(deleted_at=None)
+        columns = [c for c in ServiceUser.__table__.columns if c.name != 'password']
+        return db.session.query(*columns).filter_by(**param).all()

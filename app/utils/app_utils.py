@@ -3,6 +3,7 @@ from sqlalchemy.exc import OperationalError
 
 from app import app, db
 
+
 def check_database_status(table_name) -> bool :
     with app.app_context():
         try:

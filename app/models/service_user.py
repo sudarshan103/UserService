@@ -2,8 +2,8 @@
 from sqlalchemy import Column, String, BigInteger, Boolean
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from app import db
 from app.models.core import RecordDate, SoftDelete, CoreMethods, Uuid
+from app.models.extensions import db
 
 
 class ServiceUser(db.Model, CoreMethods, RecordDate, Uuid, SoftDelete):

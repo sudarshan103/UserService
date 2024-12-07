@@ -4,11 +4,12 @@ from datetime import datetime, timezone
 from flask import current_app
 from flask_sqlalchemy.session import Session
 from sqlalchemy import Column, Integer, DateTime, inspect, String
+from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
 
 from app.models.extensions import db
+
 
 def new_session() -> Session:
     engine = create_engine(current_app.config['SQLALCHEMY_DATABASE_URI'])
@@ -93,7 +94,7 @@ class CoreMethods:
 
 
 class CoreModel(db.Model, Id, CoreMethods):
-    pass
+    __abstract__ = True  # Prevents this model from creating a table
 
 class Uuid:
     uuid = Column(String(36), unique=True, index=True, default=lambda: str(uuid.uuid4()))
