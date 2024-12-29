@@ -32,7 +32,7 @@ def create_user(*args, **kwargs):
 @user_api.route('/user', methods=['GET'])
 @verify_auth_token
 def list_users(**kwargs):
-    users = ServiceUserRepo.get_all_users_by_filter(dict(deleted_at=None))
+    users = ServiceUserRepo.get_users_to_chat_with(dict(deleted_at=None), kwargs.get('user_data')['uuid'])
     return json.dumps([user._asdict() for user in users], cls=ApiJSONEncoder)
 
 

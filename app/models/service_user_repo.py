@@ -31,3 +31,9 @@ class ServiceUserRepo:
         param.update(deleted_at=None)
         columns = [c for c in ServiceUser.__table__.columns if c.name != 'password']
         return db.session.query(*columns).filter_by(**param).all()
+
+    @classmethod
+    def get_users_to_chat_with(cls, param, uuid):
+        return (db.session.query(ServiceUser.first_name, ServiceUser.last_name,
+                                ServiceUser.uuid, ServiceUser.is_admin).filter_by(**param)
+                               .filter(ServiceUser.uuid != uuid).all())
