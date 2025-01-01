@@ -59,16 +59,18 @@ def login():
     if not user or not user.check_password(data['password']):
         return jsonify({'message': 'Invalid username or password'}), 401
 
+    full_name = f"{user.first_name} {user.last_name}" if user.last_name else user.first_name
+
     # Create JWT token
     access_token = generate_token(user_id=user.id,
                                   additional_data= {"is_admin":user.is_admin,
                                                     "uuid":user.uuid,
-                                                    "name": f"{user.first_name} {user.last_name}" if user.last_name else user.first_name
+                                                    "name": full_name
                                                     })
 
     return jsonify({
-        'message': 'Login successful',
         'auth_token': access_token,
         'first_name': user.first_name,
-        'last_name': user.last_name
+        'full_name': full_name,
+        'uuid': user.uuid
     })

@@ -9,7 +9,7 @@
     <title>Login</title>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Check if authToken exists in cookies and redirect if present
+
             const getCookie = (name) => {
                 const value = `;${document.cookie}`;
                 const parts = value.split(`; ${name}=`);
@@ -42,11 +42,10 @@
 
                     if (response.ok) {
                         const data = await response.json();
-                        // Use an HttpOnly, Secure cookie to store the auth token
                         document.cookie = `authToken=${data.auth_token};Secure;SameSite=None;path=/;`;
                         document.cookie = `person=${data.first_name};Secure;SameSite=None;path=/;`;
-                        // Notify the Flask app of the login event
-                        window.opener?.postMessage({ authToken: data.auth_token }, '*');
+                        document.cookie = `name=${data.full_name};Secure;SameSite=None;path=/;`;
+                        document.cookie = `uuid=${data.uuid};Secure;SameSite=None;path=/;`;
                         window.location.href = 'http://127.0.0.1:5001/contacts';
                     } else {
                         alert('Login failed. Please check your credentials.');
