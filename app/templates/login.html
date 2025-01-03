@@ -18,7 +18,7 @@
 
             const authToken = getCookie('authToken');
             if (authToken) {
-                window.location.href = 'http://127.0.0.1:5001/contacts';
+                window.location.href = 'http://127.0.0.1:5001/chat';
                 return;
             }
 
@@ -46,7 +46,7 @@
                         document.cookie = `person=${data.first_name};Secure;SameSite=None;path=/;`;
                         document.cookie = `name=${data.full_name};Secure;SameSite=None;path=/;`;
                         document.cookie = `uuid=${data.uuid};Secure;SameSite=None;path=/;`;
-                        window.location.href = 'http://127.0.0.1:5001/contacts';
+                        window.location.href = 'http://127.0.0.1:5001/chat';
                     } else {
                         alert('Login failed. Please check your credentials.');
                     }
